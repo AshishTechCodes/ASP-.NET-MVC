@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASP.NET Core MVC CRUD - Complete Tutorial</title>
+    
+    <!-- Bootstrap 5 CSS + Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    
+    <!-- Prism.js for code highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+    
+    <style>
+        :root {
+            --primary-color: #512bd4;
+            --secondary-color: #6c5ce7;
+            --success-color: #00b894;
+            --warning-color: #fdcb6e;
+            --danger-color: #d63031;
+            --dark-bg: #2d3436;
+            --code-bg: #1e1e2f;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .tutorial-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            padding: 40px;
+            color: white;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        
+        .section-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .section-card:hover {
+            transform: translateY(-2px);
+        }
+        
+        .step-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+        
+        .code-block {
+            background: var(--code-bg);
+            border-radius: 12px;
+            padding: 20px;
+            overflow-x: auto;
+            margin: 20px 0;
+            position: relative;
+        }
+        
+        .code-block pre {
+            margin: 0;
+            background: transparent;
+        }
+        
+        .code-block code {
+            font-family: 'Fira Code', 'Courier New', monospace;
+            font-size: 14px;
+            color: #e4e4e4;
+        }
+        
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .copy-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .file-tree {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            font-family: monospace;
+        }
+        
+        .file-tree i {
+            margin-right: 10px;
+            color: #f39c12;
+        }
+        
+        .connection-diagram {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+        }
+        
+        .diagram-node {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            display: inline-block;
+            min-width: 200px;
+        }
+        
+        .diagram-arrow {
+            font-size: 30px;
+            color: var(--primary-color);
+            display: inline-block;
+            margin: 0 15px;
+        }
+        
+        .badge-custom {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+        
+        .table-connections td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        /* .nav-tabs-custom {
+            margin-bottom: 20px;
+        }
+        
+        .nav-tabs-custom .nav-link {
+            border: none;
+            color: var(--primary-color);
+            font-weight: 500;
+            padding: 12px 25px;
+        }
+        
+        .nav-tabs-custom .nav-link.active {
+            color: white;
+            border-bottom: 3px solid white;
+            background: transparent;
+        } */
+
+
+        .nav-tabs-custom {
+            margin-bottom: 20px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            flex-wrap: nowrap;
+            white-space: nowrap;
+            display: flex;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+        }
+
+        .nav-tabs-custom::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        .nav-tabs-custom::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+        }
+
+        .nav-tabs-custom::-webkit-scrollbar-thumb {
+            background: white;
+            border-radius: 10px;
+        }
+
+        .nav-tabs-custom .nav-item {
+            display: inline-block;
+            float: none;
+        }
+
+        .nav-tabs-custom .nav-link {
+            border: none;
+            color: var(--primary-color);
+            font-weight: 500;
+            padding: 12px 25px;
+            white-space: nowrap;
+        }
+
+        .nav-tabs-custom .nav-link.active {
+            color: white;
+            border-bottom: 3px solid white;
+            background: transparent;
+        }
+
+        
+        .footer {
+            background: var(--dark-bg);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .diagram-arrow {
+                display: block;
+                transform: rotate(90deg);
+                margin: 10px 0;
+            }
+            
+            .code-block {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="tutorial-container">
+        <!-- Header Section -->
+        <div class="header-card text-center">
+            <i class="bi bi-database-fill-gear" style="font-size: 60px;"></i>
+            <h1 class="display-4 fw-bold mt-3">Complete CRUD Operation</h1>
+            <p class="lead">ASP.NET Core MVC - Step by Step Tutorial with Database Integration</p>
+            <div class="mt-3">
+                <span class="badge bg-light text-dark me-2"><i class="bi bi-filetype-cs"></i> C#</span>
+                <span class="badge bg-light text-dark me-2"><i class="bi bi-database"></i> SQL Server</span>
+                <span class="badge bg-light text-dark me-2"><i class="bi bi-bootstrap-fill"></i> Bootstrap 5</span>
+                <span class="badge bg-light text-dark"><i class="bi bi-github"></i> MVC Pattern</span>
+            </div>
+        </div>
+
+        <!-- Project Structure Overview -->
+        <div class="section-card">
+            <h3><i class="bi bi-folder2-open text-primary me-2"></i> Project Structure Overview</h3>
+            <div class="file-tree">
+                <i class="bi bi-folder-fill"></i> EmployeeCRUD/<br>
+                &nbsp;&nbsp;<i class="bi bi-folder-fill"></i> Models/<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<i class="bi bi-filetype-cs"></i> Employee.cs <span class="text-muted">- Employee entity/model</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<i class="bi bi-filetype-cs"></i> EmployeeDataAccessLayer.cs <span class="text-muted">- Database operations</span><br>
+                &nbsp;&nbsp;<i class="bi bi-folder-fill"></i> Controllers/<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<i class="bi bi-filetype-cs"></i> EmployeeController.cs <span class="text-muted">- Handles HTTP requests</span><br>
+                &nbsp;&nbsp;<i class="bi bi-folder-fill"></i> Views/<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<i class="bi bi-folder-fill"></i> Employee/<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="bi bi-filetype-html"></i> Create.cshtml <span class="text-muted">- Add employee form</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="bi bi-filetype-html"></i> Index.cshtml <span class="text-muted">- Employee list</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<i class="bi bi-folder-fill"></i> Shared/<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="bi bi-filetype-html"></i> _Layout.cshtml <span class="text-muted">- Master page</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<i class="bi bi-filetype-html"></i> _ViewStart.cshtml <span class="text-muted">- Sets default layout</span><br>
+                &nbsp;&nbsp;<i class="bi bi-filetype-cs"></i> Program.cs <span class="text-muted">- App entry point</span><br>
+                &nbsp;&nbsp;<i class="bi bi-filetype-json"></i> appsettings.json <span class="text-muted">- Configuration</span><br>
+                &nbsp;&nbsp;<i class="bi bi-filetype-xml"></i> EmployeeCRUD.csproj <span class="text-muted">- Project dependencies</span>
+            </div>
+        </div>
+
+        <!-- File Connection Diagram -->
+        <div class="section-card">
+            <h3><i class="bi bi-diagram-3 text-primary me-2"></i> File Connection Diagram</h3>
+            <div class="connection-diagram">
+                <div class="diagram-node">
+                    <i class="bi bi-play-circle"></i> Program.cs<br>
+                    <small class="text-muted">Entry point</small>
+                </div>
+                <div class="diagram-arrow"><i class="bi bi-arrow-down-short"></i></div>
+                <div class="diagram-node">
+                    <i class="bi bi-controller"></i> EmployeeController.cs<br>
+                    <small class="text-muted">Request handler</small>
+                </div>
+                <div class="diagram-arrow"><i class="bi bi-arrow-down-short"></i></div>
+                <div class="diagram-node">
+                    <i class="bi bi-database"></i> EmployeeDataAccessLayer.cs<br>
+                    <small class="text-muted">Database logic</small>
+                </div>
+                <div class="diagram-arrow"><i class="bi bi-arrow-down-short"></i></div>
+                <div class="diagram-node">
+                    <i class="bi bi-server"></i> SQL Server<br>
+                    <small class="text-muted">EmployeeDB</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Steps Tabs -->
+        <!-- <ul class="nav nav-tabs-custom" id="stepsTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#steps1-4" type="button" role="tab">Steps 1-4</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#steps5-7" type="button" role="tab">Steps 5-7</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#steps8-11" type="button" role="tab">Steps 8-11</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#steps12-13" type="button" role="tab">Steps 12-13</button>
+            </li>
+        </ul> -->
+
+        <ul class="nav nav-tabs-custom" id="stepsTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#steps1-4" type="button" role="tab" aria-selected="true">Steps 1-4</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#steps5-7" type="button" role="tab" aria-selected="false" tabindex="-1">Steps 5-7</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#steps8-11" type="button" role="tab" aria-selected="false" tabindex="-1">Steps 8-11</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#steps12-13" type="button" role="tab" aria-selected="false" tabindex="-1">Steps 12-13</button>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <!-- Steps 1-4 -->
+            <div class="tab-pane fade show active" id="steps1-4">
+                <!-- Step 1 -->
+                <div class="section-card">
+                    <h4><span class="step-badge">1</span> Create the Project</h4>
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
+                        <pre><code class="language-bash">dotnet new mvc -n EmployeeCRUD
+cd EmployeeCRUD</code></pre>
+                    </div>
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle-fill"></i> <strong>Explanation:</strong> Creates a new ASP.NET Core MVC project. MVC (Model-View-Controller) separates data (Model), UI (View), and request handling (Controller).
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="section-card">
+                    <h4><span class="step-badge">2</span> Install Required NuGet Packages</h4>
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
+                        <pre><code class="language-bash">dotnet add package System.Data.SqlClient</code></pre>
+                    </div>
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle-fill"></i> <strong>Explanation:</strong> Adds SQL Server connectivity - provides <code>SqlConnection</code>, <code>SqlCommand</code>, and <code>SqlDataReader</code> classes.
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="section-card">
+                    <h4><span class="step-badge">3</span> Configure Database Connection - <code>appsettings.json</code></h4>
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
+                        <pre><code class="language-json">{
+  "ConnectionStrings": {
+    "EmployeeDBConnectionString": "Server=LAPTOP-S348F32B\\SQLEXPRESS;Database=EmployeeDB;Integrated Security=True;TrustServerCertificate=True"
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*"
+}</code></pre>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-connections mt-3">
+                            <thead><tr><th>Line</th><th>Purpose</th></tr></thead>
+                            <tbody>
+                                <tr><td><code>"ConnectionStrings"</code></td><td>Predefined section for connection settings</td></tr>
+                                <tr><td><code>"EmployeeDBConnectionString"</code></td><td>Custom name - used later in <code>GetConnectionString()</code></td></tr>
+                                <tr><td><code>Server=...\\SQLEXPRESS</code></td><td>SQL Server instance (double backslash escapes in JSON)</td></tr>
+                                <tr><td><code>Integrated Security=True</code></td><td>Uses Windows authentication</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="section-card">
+                    <h4><span class="step-badge">4</span> Create Model - <code>Models/Employee.cs</code></h4>
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
+                        <pre><code class="language-csharp">namespace EmployeeCRUD.Models;
+
+public class Employee
+{
+    public int EmployeeId { get; set; }
+    public string FirstName { get; set; } = string.Empty;
+    public string LastName { get; set; } = string.Empty;
+    public string Email { get; set; } = string.Empty;
+    public string Department { get; set; } = string.Empty;
+    public DateTime? HireDate { get; set; }
+}</code></pre>
+                    </div>
+                    <div class="alert alert-success">
+                        <i class="bi bi-check-circle-fill"></i> <strong>Connected to:</strong> EmployeeController, EmployeeDataAccessLayer, Create.cshtml, Index.cshtml
+                    </div>
+                </div>
+            </div>
+
+            <!-- Steps 5-7 -->
+            <div class="tab-pane fade" id="steps5-7">
+                <!-- Step 5 -->
+                <div class="section-card">
+                    <h4><span class="step-badge">5</span> Data Access Layer - <code>Models/EmployeeDataAccessLayer.cs</code></h4>
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
+                        <pre><code class="language-csharp">using System.Data.SqlClient;
+
+namespace EmployeeCRUD.Models;
+
+public class EmployeeDataAccessLayer
+{
+    private static IConfiguration _configuration;
+
+    public static void Configure(IConfiguration configuration)
+    {
+        _configuration = configuration;
+    }
+
+    private static string GetConnectionString()
+    {
+        return _configuration.GetConnectionString("EmployeeDBConnectionString");
+    }
+
+    // CREATE Operation
+    public static void InsertEmployee(Employee employee)
+    {
+        string query = @"INSERT INTO Employee (FirstName, LastName, Email, Department, HireDate) 
+                         VALUES (@FirstName, @LastName, @Email, @Department, @HireDate)";
+
+        using (SqlConnection connection = new SqlConnection(GetConnectionString()))
+        {
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@FirstName", employee.FirstName);
+                command.Parameters.AddWithValue("@LastName", employee.LastName);
+                command.Parameters.AddWithValue("@Email", employee.Email);
+                command.Parameters.AddWithValue("@Department", employee.Department ?? (object)DBNull.Value);
+                command.Parameters.AddWithValue("@HireDate", employee.HireDate ?? (object)DBNull.Value);
+                
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
+        }
+    }
+
+    // READ Operation - Get All Employees
+    public static List<Employee> GetAllEmployees()
+    {
+        List<Employee> employeesList = new List<Employee>();
+        string query = "SELECT EmployeeID, FirstName, LastName, Email, Department, HireDate FROM Employee";
+
+        using (SqlConnection connection = new SqlConnection(GetConnectionString()))
+        {
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                connection.Open();
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Employee employee = new Employee
+                        {
+                            EmployeeId = Convert.ToInt32(reader["EmployeeID"]),
+                            FirstName = reader["FirstName"].ToString(),
+                            LastName = reader["LastName"].ToString(),
+                            Email = reader["Email"].ToString(),
+                            Department = reader["Department"] == DBNull.Value ? null : reader["Department"].ToString(),
+                            HireDate = reader["HireDate"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["HireDate"])
+                        };
+                        employeesList.Add(employee);
+                    }
+                }
+            }
+        }
+        return employeesList;
+    }
+}</code></pre>
+                    </div>
+                    <div class="alert alert-warning">
+                        <i class="bi bi-exclamation-triangle-fill"></i> <strong>Key Point:</strong> SQL Parameters (<code>@FirstName</code>) prevent SQL injection attacks!
+                    </div>
+                </div>
+
+                <!-- Step 6 -->
+                <div class="section-card">
+                    <h4><span class="step-badge">6</span> Create Controller - <code>Controllers/EmployeeController.cs</code></h4>
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
+                        <pre><code class="language-csharp">using Microsoft.AspNetCore.Mvc;
+using EmployeeCRUD.Models;
+
+namespace EmployeeCRUD.Controllers;
+
+public class EmployeeController : Controller
+{
+    // GET: Employee/Index - Display all employees
+    public IActionResult Index()
+    {
+        var employees = EmployeeDataAccessLayer.GetAllEmployees();
+        return View(employees);
+    }
+
+    // GET: Employee/Create - Show Create Form
+    public IActionResult Create()
+    {
+        return View();
+    }
+
+    // POST: Employee/Create - Process Form Submission
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Create(Employee employee)
+    {
+        try
+        {
+            if (ModelState.IsValid)
+            {
+                EmployeeDataAccessLayer.InsertEmployee(employee);
+                TempData["SuccessMessage"] = "Employee created successfully!";
+                return RedirectToAction("Index");
+            }
+        }
+        catch (Exception ex)
+        {
+            ModelState.AddModelError("", "Unable to save changes: " + ex.Message);
+        }
+        return View(employee);
+    }
+}</code></pre>
+                    </div>
+                    <div class="alert alert-success">
+                        <i class="bi bi-check-circle-fill"></i> <strong>Attributes:</strong> <code>[HttpPost]</code> restricts to POST requests; <code>[ValidateAntiForgeryToken]</code> prevents CSRF attacks.
+                    </div>
+                </div>
+
+                <!-- Step 7 -->
+                <div class="section-card">
+                    <h4><span class="step-badge">7</span> Configure <code>Program.cs</code></h4>
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
+                        <pre><code class="language-csharp">using EmployeeCRUD.Models;
+
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddControllersWithViews();
+
+var app = builder.Build();
+
+// Configure EmployeeDataAccessLayer
+EmployeeDataAccessLayer.Configure(app.Configuration);
+
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Home/Error");
+    app.UseHsts();
+}
+
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+app.UseRouting();
+app.UseAuthorization();
+
+// Changed default route to Employee controller
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Employee}/{action=Create}/{id?}");
+
+app.Run();</code></pre>
+                    </div>
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle-fill"></i> <strong>Route Pattern:</strong> <code>{controller=Employee}/{action=Create}/{id?}</code> - Maps URL to EmployeeController by default.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Steps 8-11 -->
+            <div class="tab-pane fade" id="steps8-11">
+                <!-- Step 8 -->
+                <div class="section-card">
+                    <h4><span class="step-badge">8</span> Create Layout - <code>Views/Shared/_Layout.cshtml</code></h4>
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
+                        <pre><code class="language-markup">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset="utf-8" /&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;@ViewBag.Title - Employee Management&lt;/title&gt;
+    &lt;link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="navbar navbar-inverse navbar-fixed-top"&gt;
+        &lt;div class="container"&gt;
+            &lt;div class="navbar-header"&gt;
+                @Html.ActionLink("Employee Management", "Create", "Employee", null, new { @class = "navbar-brand" })
+            &lt;/div&gt;
+            &lt;div class="navbar-collapse collapse"&gt;
+                &lt;ul class="nav navbar-nav"&gt;
+                    &lt;li&gt;@Html.ActionLink("Add Employee", "Create", "Employee")&lt;/li&gt;
+                    &lt;li&gt;@Html.ActionLink("Employee List", "Index", "Employee")&lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="container body-content" style="margin-top:50px"&gt;
+        @RenderBody()
+        &lt;hr /&gt;
+        &lt;footer&gt;
+            &lt;p&gt;&copy; @DateTime.Now.Year - Employee Management System&lt;/p&gt;
+        &lt;/footer&gt;
+    &lt;/div&gt;
+    &lt;script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"&gt;&lt;/script&gt;
+    &lt;script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"&gt;&lt;/script&gt;
+    @await RenderSectionAsync("Scripts", required: false)
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+                    </div>
+                </div>
+
+                <!-- Step 9 -->
+                <div class="section-card">
+                    <h4><span class="step-badge">9</span> Create ViewStart - <code>Views/_ViewStart.cshtml</code></h4>
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
+                        <pre><code class="language-markup">@{
+    Layout = "_Layout";
+}</code></pre>
+                    </div>
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle-fill"></i> <strong>Purpose:</strong> Sets default layout for all views automatically.
+                    </div>
+                </div>
+
+                <!-- Step 10 -->
+                <div class="section-card">
+                    <h4><span class="step-badge">10</span> Create Create View - <code>Views/Employee/Create.cshtml</code></h4>
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
+                        <pre><code class="language-markup">@model EmployeeCRUD.Models.Employee
+
+@{
+    ViewBag.Title = "Create New Employee";
+}
+
+&lt;h2&gt;Create New Employee&lt;/h2&gt;
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    &lt;div class="form-horizontal"&gt;
+        &lt;h4&gt;Employee Details&lt;/h4&gt;
+        &lt;hr/&gt;
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        
+        &lt;div class="form-group"&gt;
+            @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
+            &lt;div class="col-md-10"&gt;
+                @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter first name" } })
+                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+            &lt;/div&gt;
+        &lt;/div&gt;
+        
+        &lt;div class="form-group"&gt;
+            @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-2" })
+            &lt;div class="col-md-10"&gt;
+                @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter last name" } })
+                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+            &lt;/div&gt;
+        &lt;/div&gt;
+        
+        &lt;div class="form-group"&gt;
+            &lt;div class="col-md-offset-2 col-md-10"&gt;
+                &lt;input type="submit" value="Create Employee" class="btn btn-success" /&gt;
+                @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+}
+
+@section Scripts {
+    &lt;script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.19.2/jquery.validate.min.js"&gt;&lt;/script&gt;
+    &lt;script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"&gt;&lt;/script&gt;
+}</code></pre>
+                    </div>
+                </div>
+
+                <!-- Step 11 -->
+                <div class="section-card">
+                    <h4><span class="step-badge">11</span> Create Index View - <code>Views/Employee/Index.cshtml</code></h4>
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
+                        <pre><code class="language-markup">@model IEnumerable&lt;EmployeeCRUD.Models.Employee&gt;
+
+@{
+    ViewBag.Title = "Employee List";
+}
+
+&lt;h2&gt;Employee List&lt;/h2&gt;
+
+@if (TempData["SuccessMessage"] != null)
+{
+    &lt;div class="alert alert-success"&gt;
+        @TempData["SuccessMessage"]
+    &lt;/div&gt;
+}
+
+&lt;p&gt;
+    @Html.ActionLink("Create New Employee", "Create", null, new { @class = "btn btn-primary" })
+&lt;/p&gt;
+
+&lt;table class="table table-bordered table-striped"&gt;
+    &lt;thead&gt;
+        <tr>
+            &lt;th&gt;ID&lt;/th&gt;
+            &lt;th&gt;First Name&lt;/th&gt;
+            &lt;th&gt;Last Name&lt;/th&gt;
+            &lt;th&gt;Email&lt;/th&gt;
+            &lt;th&gt;Department&lt;/th&gt;
+            &lt;th&gt;Hire Date&lt;/th&gt;
+        </tr>
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.EmployeeId</td>
+                <td>@item.FirstName</td>
+                <td>@item.LastName</td>
+                <td>@item.Email</td>
+                <td>@item.Department</td>
+                <td>@(item.HireDate.HasValue ? item.HireDate.Value.ToShortDateString() : "")</td>
+            </tr>
+        }
+    &lt;/tbody&gt;
+&lt;/table&gt;</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Steps 12-13 -->
+            <div class="tab-pane fade" id="steps12-13">
+                <!-- Step 12 -->
+                <div class="section-card">
+                    <h4><span class="step-badge">12</span> Create Database in SQL Server</h4>
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
+                        <pre><code class="language-sql">CREATE DATABASE EmployeeDB;
+GO
+
+USE EmployeeDB;
+GO
+
+CREATE TABLE Employee (
+    EmployeeID INT IDENTITY(1,1) PRIMARY KEY,
+    FirstName NVARCHAR(50) NOT NULL,
+    LastName NVARCHAR(50) NOT NULL,
+    Email NVARCHAR(100) NOT NULL,
+    Department NVARCHAR(50),
+    HireDate DATETIME NULL
+);
+GO</code></pre>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-connections mt-3">
+                            <thead><tr><th>SQL Keyword</th><th>Purpose</th></tr></thead>
+                            <tbody>
+                                <tr><td><code>IDENTITY(1,1)</code></td><td>Auto-increments EmployeeID starting at 1</td></tr>
+                                <tr><td><code>PRIMARY KEY</code></td><td>Unique identifier for each row</td></tr>
+                                <tr><td><code>NVARCHAR(50)</code></td><td>Unicode string, max 50 characters</td></tr>
+                                <tr><td><code>NOT NULL</code></td><td>Required field</td></tr>
+                                <tr><td><code>DATETIME NULL</code></td><td>Optional date/time column</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Step 13 -->
+                <div class="section-card">
+                    <h4><span class="step-badge">13</span> Run the Application</h4>
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
+                        <pre><code class="language-bash">dotnet build
+dotnet run</code></pre>
+                    </div>
+                    <div class="alert alert-success">
+                        <i class="bi bi-check-circle-fill"></i> Open browser to: <code>https://localhost:7013</code> or <code>http://localhost:5033</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Reference Table -->
+        <div class="section-card">
+            <h3><i class="bi bi-table text-primary me-2"></i> Quick Reference: Predefined vs. Custom</h3>
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="bi bi-check-lg text-success"></i> Predefined (ASP.NET Core)</h5>
+                    <ul class="list-group">
+                        <li class="list-group-item"><code>Controller</code> - Base class</li>
+                        <li class="list-group-item"><code>IActionResult</code> - Action return type</li>
+                        <li class="list-group-item"><code>[HttpPost]</code> - Attribute</li>
+                        <li class="list-group-item"><code>TempData</code> - One-request data storage</li>
+                        <li class="list-group-item"><code>ModelState</code> - Validation container</li>
+                        <li class="list-group-item"><code>@Html.BeginForm()</code> - Form helper</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h5><i class="bi bi-pencil-square text-warning"></i> Custom (You Create)</h5>
+                    <ul class="list-group">
+                        <li class="list-group-item"><code>Employee</code> - Model class</li>
+                        <li class="list-group-item"><code>EmployeeController</code> - Controller</li>
+                        <li class="list-group-item"><code>EmployeeDataAccessLayer</code> - Database logic</li>
+                        <li class="list-group-item"><code>Create.cshtml</code> - Form view</li>
+                        <li class="list-group-item"><code>Index.cshtml</code> - List view</li>
+                        <li class="list-group-item"><code>_Layout.cshtml</code> - Master page</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Common Issues -->
+        <div class="section-card">
+            <h3><i class="bi bi-bug text-danger me-2"></i> Common Issues & Solutions</h3>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead class="table-light">
+                        <tr><th>Issue</th><th>Solution</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>"Cannot open database"</td><td>Run the CREATE DATABASE script in SSMS first</td></tr>
+                        <tr><td>"Login failed"</td><td>Use Trusted_Connection=True or add User Id=sa;Password=yourpassword</td></tr>
+                        <tr><td>"Model has no element"</td><td>Check that @model is at the TOP of the view file</td></tr>
+                        <tr><td>"EmployeeController not found"</td><td>Verify controller name ends with "Controller"</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <i class="bi bi-code-slash" style="font-size: 40px;"></i>
+            <h4>Complete CRUD Application in ASP.NET Core MVC</h4>
+            <p>Follow these steps to build a fully functional Employee Management System</p>
+            <span class="badge-custom"><i class="bi bi-github"></i> Ashish Gupta</span>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function copyCode(btn) {
+            const codeBlock = btn.parentElement.querySelector('code');
+            const text = codeBlock.innerText;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                const originalHtml = btn.innerHTML;
+                btn.innerHTML = '<i class="bi bi-check-lg"></i> Copied!';
+                setTimeout(() => {
+                    btn.innerHTML = originalHtml;
+                }, 2000);
+            });
+        }
+        
+        // Initialize Prism for syntax highlighting
+        Prism.highlightAll();
+    </script>
+</body>
+</html>
