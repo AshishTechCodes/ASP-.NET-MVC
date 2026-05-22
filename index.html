@@ -388,12 +388,12 @@ cd EmployeeCRUD</code></pre>
                     </div>
                     <div class="table-responsive">
                         <table class="table table-connections mt-3">
-                            <thead><tr><th>Line</th><th>Purpose</th></tr></thead>
+                            <thead> &lt;tr&gt;<th>Line</th><th>Purpose</th></tr></thead>
                             <tbody>
-                                <tr><td><code>"ConnectionStrings"</code></td><td>Predefined section for connection settings</td></tr>
-                                <tr><td><code>"EmployeeDBConnectionString"</code></td><td>Custom name - used later in <code>GetConnectionString()</code></td></tr>
-                                <tr><td><code>Server=...\\SQLEXPRESS</code></td><td>SQL Server instance (double backslash escapes in JSON)</td></tr>
-                                <tr><td><code>Integrated Security=True</code></td><td>Uses Windows authentication</td></tr>
+                                 &lt;tr&gt; &lt;td&gt;<code>"ConnectionStrings"</code></td> &lt;td&gt;Predefined section for connection settings</td></tr>
+                                 &lt;tr&gt; &lt;td&gt;<code>"EmployeeDBConnectionString"</code></td> &lt;td&gt;Custom name - used later in <code>GetConnectionString()</code></td></tr>
+                                 &lt;tr&gt; &lt;td&gt;<code>Server=...\\SQLEXPRESS</code></td> &lt;td&gt;SQL Server instance (double backslash escapes in JSON)</td></tr>
+                                 &lt;tr&gt; &lt;td&gt;<code>Integrated Security=True</code></td> &lt;td&gt;Uses Windows authentication</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -736,7 +736,7 @@ app.Run();</code></pre>
 
 &lt;table class="table table-bordered table-striped"&gt;
     &lt;thead&gt;
-        <tr>
+         &lt;tr&gt;
             &lt;th&gt;ID&lt;/th&gt;
             &lt;th&gt;First Name&lt;/th&gt;
             &lt;th&gt;Last Name&lt;/th&gt;
@@ -748,13 +748,13 @@ app.Run();</code></pre>
     &lt;tbody&gt;
         @foreach (var item in Model)
         {
-            <tr>
-                <td>@item.EmployeeId</td>
-                <td>@item.FirstName</td>
-                <td>@item.LastName</td>
-                <td>@item.Email</td>
-                <td>@item.Department</td>
-                <td>@(item.HireDate.HasValue ? item.HireDate.Value.ToShortDateString() : "")</td>
+             &lt;tr&gt;
+                 &lt;td&gt;@item.EmployeeId</td>
+                 &lt;td&gt;@item.FirstName</td>
+                 &lt;td&gt;@item.LastName</td>
+                 &lt;td&gt;@item.Email</td>
+                 &lt;td&gt;@item.Department</td>
+                 &lt;td&gt;@(item.HireDate.HasValue ? item.HireDate.Value.ToShortDateString() : "")</td>
             </tr>
         }
     &lt;/tbody&gt;
@@ -788,13 +788,13 @@ GO</code></pre>
                     </div>
                     <div class="table-responsive">
                         <table class="table table-connections mt-3">
-                            <thead><tr><th>SQL Keyword</th><th>Purpose</th></tr></thead>
+                            <thead> &lt;tr&gt;<th>SQL Keyword</th><th>Purpose</th></tr></thead>
                             <tbody>
-                                <tr><td><code>IDENTITY(1,1)</code></td><td>Auto-increments EmployeeID starting at 1</td></tr>
-                                <tr><td><code>PRIMARY KEY</code></td><td>Unique identifier for each row</td></tr>
-                                <tr><td><code>NVARCHAR(50)</code></td><td>Unicode string, max 50 characters</td></tr>
-                                <tr><td><code>NOT NULL</code></td><td>Required field</td></tr>
-                                <tr><td><code>DATETIME NULL</code></td><td>Optional date/time column</td></tr>
+                                 &lt;tr&gt; &lt;td&gt;<code>IDENTITY(1,1)</code></td> &lt;td&gt;Auto-increments EmployeeID starting at 1</td></tr>
+                                 &lt;tr&gt; &lt;td&gt;<code>PRIMARY KEY</code></td> &lt;td&gt;Unique identifier for each row</td></tr>
+                                 &lt;tr&gt; &lt;td&gt;<code>NVARCHAR(50)</code></td> &lt;td&gt;Unicode string, max 50 characters</td></tr>
+                                 &lt;tr&gt; &lt;td&gt;<code>NOT NULL</code></td> &lt;td&gt;Required field</td></tr>
+                                 &lt;tr&gt; &lt;td&gt;<code>DATETIME NULL</code></td> &lt;td&gt;Optional date/time column</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -850,13 +850,13 @@ dotnet run</code></pre>
             <div class="table-responsive">
                 <table class="table">
                     <thead class="table-light">
-                        <tr><th>Issue</th><th>Solution</th></tr>
+                         &lt;tr&gt;<th>Issue</th><th>Solution</th></tr>
                     </thead>
                     <tbody>
-                        <tr><td>"Cannot open database"</td><td>Run the CREATE DATABASE script in SSMS first</td></tr>
-                        <tr><td>"Login failed"</td><td>Use Trusted_Connection=True or add User Id=sa;Password=yourpassword</td></tr>
-                        <tr><td>"Model has no element"</td><td>Check that @model is at the TOP of the view file</td></tr>
-                        <tr><td>"EmployeeController not found"</td><td>Verify controller name ends with "Controller"</td></tr>
+                         &lt;tr&gt; &lt;td&gt;"Cannot open database"</td> &lt;td&gt;Run the CREATE DATABASE script in SSMS first</td></tr>
+                         &lt;tr&gt; &lt;td&gt;"Login failed"</td> &lt;td&gt;Use Trusted_Connection=True or add User Id=sa;Password=yourpassword</td></tr>
+                         &lt;tr&gt; &lt;td&gt;"Model has no element"</td> &lt;td&gt;Check that @model is at the TOP of the view file</td></tr>
+                         &lt;tr&gt; &lt;td&gt;"EmployeeController not found"</td> &lt;td&gt;Verify controller name ends with "Controller"</td></tr>
                     </tbody>
                 </table>
             </div>
