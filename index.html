@@ -470,9 +470,9 @@ public class EmployeeDataAccessLayer
     }
 
     // READ Operation - Get All Employees
-    public static List<Employee> GetAllEmployees()
+    public static List&lt;Employee&gt; GetAllEmployees()
     {
-        List<Employee> employeesList = new List<Employee>();
+        List&lt;Employee&gt; employeesList = new List&lt;Employee&gt;();
         string query = "SELECT EmployeeID, FirstName, LastName, Email, Department, HireDate FROM Employee";
 
         using (SqlConnection connection = new SqlConnection(GetConnectionString()))
